@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Template.Infra;
 using static MyProject.DataContext;
 
@@ -8,10 +10,9 @@ namespace MyProject
     {
         Task<IEnumerable<ProductsDTO>> GetAllProductsAsync();
         Task<ProductsDTO> GetProductByIdAsync(int id);
-        Task<ProductsDTO> CreateProductAsync(ProductsDTO productDto); // Novo método
-        Task<bool> DeleteProductAsync(int id); // Novo método
-        Task<ProductsDTO> UpdateProductAsync(int id, ProductsDTO productDto); // Novo método
-
+        Task<ProductsDTO> CreateProductAsync(ProductsDTO productDto); 
+        Task<bool> DeleteProductAsync(int id); 
+        Task<ProductsDTO> UpdateProductAsync(int id, ProductsDTO productDto); 
     }
 
     public class ServProducts : IServProducts
@@ -43,6 +44,7 @@ namespace MyProject
         // Implementação do método GetProductByIdAsync
         public async Task<ProductsDTO> GetProductByIdAsync(int id)
         {
+            Console.WriteLine("aa");
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
@@ -96,19 +98,53 @@ namespace MyProject
         // Implementação do UpdateProductAsync
         public async Task<ProductsDTO> UpdateProductAsync(int id, ProductsDTO productDto)
         {
+            // Busca o produto no banco de dados
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
                 return null; // Produto não encontrado
 
-            // Atualizando os campos do produto
+            // Verifica se o nome foi alterado e faz a requisição ao serviço externo
+            if (!string.IsNullOrWhiteSpace(productDto.Name) && product.Name != productDto.Name)
+            {
+                try
+                {
+                    // Configurando o HttpClient (instância deve ser injetada no construtor da classe)
+                    var httpClient = new HttpClient();
+
+                    // Corpo da requisição com o novo nome
+                    var patchContent = new StringContent(
+                        JsonSerializer.Serialize(new { newName = productDto.Name }),
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+
+                    // URL do serviço externo para atualizar o nome (ajuste conforme necessário)
+                    var externalServiceUrl = $"http://localhost:5001/api/Stock/{id}/update-name";
+
+                    // Fazendo a requisição PATCH ao serviço externo
+                    var response = await httpClient.PatchAsync(externalServiceUrl, patchContent);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception($"Erro ao atualizar nome no serviço externo: {response.ReasonPhrase}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Erro na atualização externa: {ex.Message}");
+                }
+            }
+
+            // Atualizando os campos do produto localmente
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.Description = productDto.Description;
 
-            // Salvando as mudanças no banco
+            // Salvando as mudanças no banco de dados
             await _context.SaveChangesAsync();
 
+            // Retornando o produto atualizado como DTO
             return new ProductsDTO
             {
                 Id = product.Id,
@@ -118,5 +154,5 @@ namespace MyProject
             };
         }
     }
-
 }
+

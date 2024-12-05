@@ -9,6 +9,12 @@ namespace MyProject
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
+
+        public class UpdateProductNameRequest
+        {
+            public string NewName { get; set; }
+        }
+
         private readonly IServProducts _servProducts;
 
         public ProductsController(IServProducts servProducts)
@@ -101,7 +107,6 @@ namespace MyProject
 
             return Ok(updatedProduct); // Retorna o produto atualizado
         }
+        }
     }
-
-}
 
