@@ -97,3 +97,10 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 
 3. **Atualizações Automáticas de Notificações**:  
    Atualizações no estoque disparam notificações automáticas para usuários cadastrados.
+
+---
+
+## Documentação
+
+Link da documentação completa: 
+https://documenter.getpostman.com/view/34048515/2sAYBaAq3C
