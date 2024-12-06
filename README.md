@@ -60,7 +60,7 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 
 - **Microsserviços**
   
--**1.	Serviço de Produtos**
+-**1.	Serviço de Produtos**:
 	Função: Gerencia informações dos produtos (nome, preço, descrição, etc.).
 	Endpoints:
 	- GET /products: Lista todos os produtos.
@@ -71,7 +71,7 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 
 ---
  
--**2.	Serviço de Estoque**
+-**2.	Serviço de Estoque**:
 	Função: Gerencia o inventário de produtos.
 	Endpoints:
 	- GET /stocks/{productId}: Retorna a quantidade em estoque de um produto.
@@ -80,7 +80,7 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 
 ---
 
--**3.	Serviço de Notificações**
+-**3.	Serviço de Notificações**:
 	Função: Envia alertas de estoque baixo.
 	Endpoints:
 	- POST /notifications: Dispara notificações relacionadas ao estoque.
