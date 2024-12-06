@@ -63,9 +63,7 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 -**1.	Serviço de Produtos**:
 
 	Função: Gerencia informações dos produtos (nome, preço, descrição, etc.).
- 
 	Endpoints:
- 
 	- GET /products: Lista todos os produtos.
 	- GET /products/{id}: Retorna os detalhes de um produto específico.
 	- POST /products: Cria um novo produto.
