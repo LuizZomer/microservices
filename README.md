@@ -61,7 +61,6 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
 - **Microsserviços**
   
 -**1.	Serviço de Produtos**:
-
 	Função: Gerencia informações dos produtos (nome, preço, descrição, etc.).
 	Endpoints:
 	- GET /products: Lista todos os produtos.
