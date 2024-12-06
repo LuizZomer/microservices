@@ -15,9 +15,13 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddHttpClient();
+
 GeradorDeServicos.ServiceProvider = builder.Services.BuildServiceProvider();
 
 var app = builder.Build();
+app.Urls.Add("http://localhost:5002");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
