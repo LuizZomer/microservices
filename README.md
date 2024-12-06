@@ -55,3 +55,41 @@ O sistema permite o gerenciamento de produtos e estoques, incluindo:
   Sempre que ocorre uma alteração no estoque, o sistema dispara uma notificação de alerta, se necessário.
 
 ---
+
+## Descritivo Técnico
+
+- **Microsserviços**
+  
+-**1.	Serviço de Produtos**
+	Função: Gerencia informações dos produtos (nome, preço, descrição, etc.).
+	Endpoints:
+	- GET /products: Lista todos os produtos.
+	- GET /products/{id}: Retorna os detalhes de um produto específico.
+	- POST /products: Cria um novo produto.
+	- PUT /products/{id}: Atualiza os dados de um produto.
+	- DELETE /products/{id}: Remove um produto.
+
+---
+ 
+-**2.	Serviço de Estoque**
+	Função: Gerencia o inventário de produtos.
+	Endpoints:
+	- GET /stocks/{productId}: Retorna a quantidade em estoque de um produto.
+	- POST /stocks: Adiciona ou inicializa o estoque de um produto.
+	- PUT /stocks/{productId}: Atualiza a quantidade disponível.
+
+---
+
+-**3.	Serviço de Notificações**
+	Função: Envia alertas de estoque baixo.
+	Endpoints:
+	- POST /notifications: Dispara notificações relacionadas ao estoque.
+
+---
+
+## Integrações
+
+1.	O serviço de Estoque consulta o serviço de Produtos para validar informações ao registrar ou atualizar o inventário.
+2.	O serviço de Notificações consulta o serviço de Estoque para monitorar produtos com estoque crítico.
+3.	Atualizações no estoque disparam notificações automáticas para usuários cadastrados.
+
